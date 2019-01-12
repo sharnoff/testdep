@@ -88,11 +88,11 @@ func (g *Graph) Name(fn func(*testing.T), name string) {
 // NameAll calls Graph.Name on all given function-name pairs. This is provided for simplicity of
 // syntax. Like Name, NameAll will panic with NilFuncErr if any of the given functions are nil
 func (g *Graph) NameAll(pairs []struct {
-	fn   func(*testing.T)
-	name string
+	Fn   func(*testing.T)
+	Name string
 }) {
 	for _, pair := range pairs {
-		g.Name(pair.fn, pair.name)
+		g.Name(pair.Fn, pair.Name)
 	}
 }
 
@@ -155,6 +155,8 @@ func (g *Graph) Test(t *testing.T) error {
 		}
 
 		if n.failed {
+			t.Logf("Function %q (%v) had requirements fail", n.name, n.fn)
+
 			n.done = true
 			continue
 		}
@@ -162,7 +164,7 @@ func (g *Graph) Test(t *testing.T) error {
 		// actually run the function. If we're testing this package, perform a slightly different
 		// operation
 		if !ignoreNilTesting || t != nil {
-			n.failed = t.Run(n.name, n.fn)
+			n.failed = !t.Run(n.name, n.fn)
 		} else {
 			// if we're testing:
 			n.fn(nil)
