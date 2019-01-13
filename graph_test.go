@@ -107,7 +107,6 @@ func TestTest(t *testing.T) {
 	{
 		// gives a *slightly* different function for each index of fns
 		theActualFunction := func(i int) {
-			fmt.Println("done[")
 			// find the index in indices that fns[i] is at
 			iTabIndex := -1
 			for in := range indices {
