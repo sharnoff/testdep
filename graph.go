@@ -155,7 +155,9 @@ func (g *Graph) Test(t *testing.T) error {
 		}
 
 		if n.failed {
-			t.Logf("Function %q (%v) had requirements fail", n.name, n.fn)
+			if !ignoreNilTesting || t != nil {
+				t.Logf("Function %q (%p) had requirements fail", n.name, n.fn)
+			}
 
 			n.done = true
 			continue
